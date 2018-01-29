@@ -53,6 +53,8 @@ package us.kbase.SpinningAPI;
 		                	// Execute task 0.3: same as 0.2, but with an unlimited wallclock. Kill this job using the api.
 		                } else if( cmd.contains( "0.4" ) ) {
 		                	// Execute task 0.4: submit 5 jobs using different user accounts, docker01 has a few already set up
+		                	
+		                	    submitHalfDozenJobs( );
 		                } else {
 			                // Execute command passed to this program via args
 			                executeTheCLIcommand( cmd );	                	
@@ -70,7 +72,7 @@ package us.kbase.SpinningAPI;
 	    		System.out.println( "\nJobSubmitStub::submitPrintTime:\n");
 	    		
 	    		// XXX: Hardcoded path to the script to execute:
-	    		String[] cmdScript = new String[]{"/bin/bash", "/Users/amikaili/myKbaseCode/Spinning/scripts/myScript01.sh"};
+	    		String[] cmdScript = new String[]{"/bin/bash", "/home/submitter/submit/Spinning/scripts/myScript01.sh"};
 	    		
 	    		Process p = Runtime.getRuntime().exec(cmdScript);
 	    		
@@ -86,7 +88,7 @@ package us.kbase.SpinningAPI;
 	    	}
 	    	
 	    	public static void submitSleepWallclock( ) throws IOException {
-	    		System.out.println( "\nJobSubmitStub::submitPrintTime:\n");
+	    		System.out.println( "\nJobSubmitStub::submitSleepWallclock:\n");
 	    		
 	    		// XXX: Hardcoded path to the script to execute:
 	    		String[] cmdScript = new String[]{"/bin/bash", "/Users/amikaili/myKbaseCode/Spinning/scripts/myScript02.sh"};
@@ -101,6 +103,30 @@ package us.kbase.SpinningAPI;
                     System.out.println( line );
                     line = reader.readLine();
                 }	    		
+	    		
+	    	}
+	    	
+
+	    	
+	    	public static void submitHalfDozenJobs( ) throws IOException {
+
+	    		System.out.println( "\nJobSubmitStub::submitHalfDozenJobs:\n");
+	    		
+	    		// XXX: Hardcoded path to the script to execute:
+	    		String[] cmdScript = new String[]{"/bin/bash", "/Users/amikaili/myKbaseCode/Spinning/scripts/myScript04.sh"};
+	    		
+	    		Process p = Runtime.getRuntime().exec(cmdScript);
+	    		
+                BufferedReader reader = new BufferedReader(new InputStreamReader( p.getInputStream() ));
+                String line = reader.readLine();
+                System.out.println( line );
+                line = reader.readLine();
+                while ( line != null ) {    
+                    System.out.println( line );
+                    line = reader.readLine();
+                }	    			    		
+	    		
+	    		
 	    		
 	    	}
 	    	public static void executeTheCLIcommand(String cmd) {
