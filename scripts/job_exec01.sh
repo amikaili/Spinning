@@ -1,1 +1,2 @@
-uname -a
+#!/bin/sh
+echo  $(date -u)
