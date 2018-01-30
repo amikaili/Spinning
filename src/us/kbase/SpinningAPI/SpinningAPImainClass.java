@@ -51,10 +51,14 @@ package us.kbase.SpinningAPI;
 		                	    
 		                } else if( cmd.contains( "0.3" ) ) {
 		                	// Execute task 0.3: same as 0.2, but with an unlimited wallclock. Kill this job using the api.
+		                	
+		                	    submitInfiniteLoop( );
+		                	    
 		                } else if( cmd.contains( "0.4" ) ) {
 		                	// Execute task 0.4: submit 5 jobs using different user accounts, docker01 has a few already set up
 		                	
 		                	    submitHalfDozenJobs( );
+		                	    
 		                } else {
 			                // Execute command passed to this program via args
 			                executeTheCLIcommand( cmd );	                	
@@ -91,7 +95,7 @@ package us.kbase.SpinningAPI;
 	    		System.out.println( "\nJobSubmitStub::submitSleepWallclock:\n");
 	    		
 	    		// XXX: Hardcoded path to the script to execute:
-	    		String[] cmdScript = new String[]{"/bin/bash", "/Users/amikaili/myKbaseCode/Spinning/scripts/myScript02.sh"};
+	    		String[] cmdScript = new String[]{"/bin/bash", "/home/submitter/submit/Spinning/scripts/myScript02.sh"};
 	    		
 	    		Process p = Runtime.getRuntime().exec(cmdScript);
 	    		
@@ -106,14 +110,12 @@ package us.kbase.SpinningAPI;
 	    		
 	    	}
 	    	
-
-	    	
-	    	public static void submitHalfDozenJobs( ) throws IOException {
+	    	public static void submitInfiniteLoop( ) throws IOException {
 
 	    		System.out.println( "\nJobSubmitStub::submitHalfDozenJobs:\n");
 	    		
 	    		// XXX: Hardcoded path to the script to execute:
-	    		String[] cmdScript = new String[]{"/bin/bash", "/Users/amikaili/myKbaseCode/Spinning/scripts/myScript04.sh"};
+	    		String[] cmdScript = new String[]{"/bin/bash", "/home/submitter/submit/Spinning/scripts/myScript03.sh"};
 	    		
 	    		Process p = Runtime.getRuntime().exec(cmdScript);
 	    		
@@ -129,6 +131,30 @@ package us.kbase.SpinningAPI;
 	    		
 	    		
 	    	}
+	    	
+	    	public static void submitHalfDozenJobs( ) throws IOException {
+
+	    		System.out.println( "\nJobSubmitStub::submitHalfDozenJobs:\n");
+	    		
+	    		// XXX: Hardcoded path to the script to execute:
+	    		String[] cmdScript = new String[]{"/bin/bash", "/home/submitter/submit/Spinning/scripts/myScript04.sh"};
+	    		
+	    		Process p = Runtime.getRuntime().exec(cmdScript);
+	    		
+                BufferedReader reader = new BufferedReader(new InputStreamReader( p.getInputStream() ));
+                String line = reader.readLine();
+                System.out.println( line );
+                line = reader.readLine();
+                while ( line != null ) {    
+                    System.out.println( line );
+                    line = reader.readLine();
+                }	    			    		
+	    		
+	    		
+	    		
+	    	}
+	    	
+	    	
 	    	public static void executeTheCLIcommand(String cmd) {
 	            System.out.println( "\nJobSubmitStub: executing command " + cmd + "\n" );        
 	            try { // Execute command submitted as args                  
