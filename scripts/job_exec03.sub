@@ -1,0 +1,9 @@
+# submit description file for executable job_exec03.sh
+ Universe     = vanilla 
+executable              = /home/submitter/submit/Spinning/scripts/job_exec03.sh
+# log                     = /home/submitter/submit/Spinning/out/logfile03.txt
+output                  = /home/submitter/submit/Spinning/out/outfile03.txt
+error                   = /home/submitter/submit/Spinning/out/errors03.txt
+should_transfer_files   = No 
+# when_to_transfer_output = ON_EXIT
+queue
