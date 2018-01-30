@@ -13,13 +13,15 @@
 
 # TODO: Infinite LOOP
 TIMETOWAIT="6"
-if [ 1 ]
-then
+while [ 1 ]
+do
     echo  $(date -u)
     echo "sleeping for $TIMETOWAIT seconds"
     /bin/sleep $TIMETOWAIT
     echo "Woke!!!"
     
-fi
+done
+
+echo "All done!"
 
 
