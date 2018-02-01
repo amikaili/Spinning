@@ -1,0 +1,36 @@
+# job_exec04.sub
+ 
+#  Wherever you see $(Cluster), HTCondor will insert the queue number
+#  assigned to this set of jobs at the time of submission.
+
+universe = vanilla
+# log = job_exec04_$(Cluster).log
+error = /home/submitter/submit/Spinning/out/job_exec04_$(Cluster)_$(Process).err
+
+#  $(Process) will be a integer number for each job, starting with "0"
+#  and increasing for the relevant number of jobs.
+
+executable = job_exec04.sh
+arguments = $(Process)
+output = /home/submitter/submit/Spinning/out/job_exec04_$(Cluster)_$(Process).out
+
+# Specify that HTCondor should transfer files to and from the
+#  computer where each job runs. The last of these lines *would* be
+#  used if there were any other files needed for the executable to run.
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+# Tell HTCondor what amount of compute resources
+#  each job will need on the computer where it runs.
+
+# request_cpus = 1
+# request_memory = 500MB
+# request_disk = 1MB
+
+
+accounting_group = user_scanon
+#accounting_group = user_kkeller
+#accounting_group = user_gavin
+
+queue
