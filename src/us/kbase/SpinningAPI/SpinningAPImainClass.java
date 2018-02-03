@@ -14,6 +14,8 @@ package us.kbase.SpinningAPI;
     import java.net.*;
 import java.rmi.RemoteException;
 import java.util.Map;
+
+// import us.kbase.narrativejobservice.sdkjobs.DockerRunner;
 	
 	// import javax.xml.rpc.ServiceException;
     
@@ -91,7 +93,6 @@ import java.util.Map;
 	    	*/
 	    	
 	    	public static void submitJavaUniverse( String[] args ) throws IOException {
-	    		System.out.println( "\nJobSubmitStub::submitJavaUniverse:\n");
 	    		// Got here because the Java Universe example submit file called this executable
 	    		// todo: Emulate like what localmethodrunner does in the old execution system today
 	    		//     endup calling docker run on this condor image...
@@ -103,12 +104,28 @@ import java.util.Map;
 	                    System.err.println("\tArgument[" + i + "]: " + args[i]);
 	                System.exit(1);
 	            }
-	            // String[] hostnameAndIP = getHostnameAndIP();
 	            final String jobId = args[0];
 	            String jobSrvUrl = args[1];	    		
 	    		
+	    		System.out.println( "\nJobSubmitStub::submitJavaUniverse called with args:\n");
+	    		System.out.println( "jobId: " + jobId + "\n" );
+	    		System.out.println( "jobSrvUrl: " + jobSrvUrl + "\n\n" );
 
-	    		
+	            String[] hostnameAndIP = getHostnameAndIP();
+	            
+	            String clientGroup = System.getenv("AWE_CLIENTGROUP");
+	            if (clientGroup == null)
+	                clientGroup = "<unknown>";
+	            
+	            // Calling Docker run
+	            /*
+	            new DockerRunner(dockerURI).run(imageName, modMeth.getModule(), inputFile, token, log,
+	                    outputFile, false, refDataDir, null, callbackUrl, jobId, additionalBinds,
+	                    cancellationChecker, envVars);
+	    		*/
+	            
+	    		System.out.println( "\nJobSubmitStub::submitJavaUniverse JOB WELL... DONE!\n\n");
+
 	    	}
 	    	
 	    	
