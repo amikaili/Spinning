@@ -11,16 +11,38 @@ package us.kbase.SpinningAPI;
     import java.io.BufferedReader;
     import java.io.IOException;
     import java.io.InputStreamReader;
-    
-    import java.net.MalformedURLException;
-    
-	import java.rmi.RemoteException;
+    import java.net.*;
+import java.rmi.RemoteException;
+import java.util.Map;
 	
 	// import javax.xml.rpc.ServiceException;
     
 	public class SpinningAPImainClass
 	{
-		
+	        private static Map<String, String> config = null;
+		    public static final String CFG_PROP_SELF_EXTERNAL_URL = "https://ci.kbase.us/services/njs_wrapper";
+		    
+		    // TODO: main method for the Java Universe:
+		    
+	    	public static void main(String[] args) {
+	    		
+	            System.out.println("\n\nHello JobSubmitStub:\n");
+	            try {
+	            	
+	                submitJavaUniverse( args );
+	                
+	            } catch (Exception ex) {
+	            	
+	            } finally {
+	            	
+	            }
+	                
+	    	}
+            
+		    
+		    // main method for the Vanilla Universe:
+		    
+		    /*
 	    	public static void main(String[] args) {
 	    		
 	            System.out.println("\n\nHello JobSubmitStub:\n");
@@ -40,27 +62,22 @@ package us.kbase.SpinningAPI;
 	                
                     try{
 			    		if( cmd.contains( "0.1" ) ) {
-		                	// Execute task 0.1: submit a test job that prints the current timestamp to an output file and exits
 		                	
 								submitPrintTime( );
 
 		                } else if( cmd.contains( "0.2" ) ) {
-		                	// Execute task 0.2: submit a job similar to 1, but in an infinite loop, sleeping 1 second between prints. Set a wallclock limit of 10 minutes
 		                	    
 		                	    submitSleepWallclock( );
 		                	    
 		                } else if( cmd.contains( "0.3" ) ) {
-		                	// Execute task 0.3: same as 0.2, but with an unlimited wallclock. Kill this job using the api.
 		                	
 		                	    submitInfiniteLoop( );
 		                	    
 		                } else if( cmd.contains( "0.4" ) ) {
-		                	// Execute task 0.4: submit 5 jobs using different user accounts, docker01 has a few already set up
 		                	
 		                	    submitHalfDozenJobs( );
 		                	    
 		                } else {
-			                // Execute command passed to this program via args
 			                executeTheCLIcommand( cmd );	                	
 		                }
                     } catch (IOException e) {
@@ -71,8 +88,59 @@ package us.kbase.SpinningAPI;
 	            
 	                System.out.println("\n\nJobSubmitStub finished.");
 	    	}
+	    	*/
 	    	
+	    	public static void submitJavaUniverse( String[] args ) throws IOException {
+	    		System.out.println( "\nJobSubmitStub::submitJavaUniverse:\n");
+	    		// Got here because the Java Universe example submit file called this executable
+	    		// todo: Emulate like what localmethodrunner does in the old execution system today
+	    		//     endup calling docker run on this condor image...
+	    		
+	    		// todo: parse args to get job id and uri to njsw server
+	            if (args.length != 2) {
+	                System.err.println("Usage: <program> <job_id> <job_service_url>");
+	                for (int i = 0; i < args.length; i++)
+	                    System.err.println("\tArgument[" + i + "]: " + args[i]);
+	                System.exit(1);
+	            }
+	            // String[] hostnameAndIP = getHostnameAndIP();
+	            final String jobId = args[0];
+	            String jobSrvUrl = args[1];	    		
+	    		
+
+	    		
+	    	}
+	    	
+	    	
+	        public static String[] getHostnameAndIP() {
+	            String hostname = null;
+	            String ip = null;
+	            try {
+	                InetAddress ia = InetAddress.getLocalHost();
+	                ip = ia.getHostAddress();
+	                hostname = ia.getHostName();
+	            } catch (Throwable ignore) {}
+	            if (hostname == null) {
+	                try {
+	                    hostname = System.getenv("HOSTNAME");
+	                    if (hostname != null && hostname.isEmpty())
+	                        hostname = null;
+	                } catch (Throwable ignore) {}
+	            }
+	            if (ip == null && hostname != null) {
+	                try {
+	                    ip = InetAddress.getByName(hostname).getHostAddress();
+	                } catch (Throwable ignore) {}
+	            }
+	            return new String[] {hostname == null ? "unknown" : hostname,
+	                    ip == null ? "unknown" : ip};
+	        }	    	
+	    	
+	    	////////// Vanilla Universe methods //////////////////////////////////////////////
 	    	public static void submitPrintTime( ) throws IOException {
+	    		
+            	// Execute task 0.1 in the Vanilla Universe: submit a test job that prints the current timestamp to an output file and exits
+
 	    		System.out.println( "\nJobSubmitStub::submitPrintTime:\n");
 	    		
 	    		// XXX: Hardcoded path to the script to execute:
@@ -92,6 +160,9 @@ package us.kbase.SpinningAPI;
 	    	}
 	    	
 	    	public static void submitSleepWallclock( ) throws IOException {
+	    		
+            	// Execute task 0.2 in the Vanilla Universe:: submit a job similar to 1, but in an infinite loop, sleeping 1 second between prints. Set a wallclock limit of 10 minutes
+
 	    		System.out.println( "\nJobSubmitStub::submitSleepWallclock:\n");
 	    		
 	    		// XXX: Hardcoded path to the script to execute:
@@ -111,6 +182,8 @@ package us.kbase.SpinningAPI;
 	    	}
 	    	
 	    	public static void submitInfiniteLoop( ) throws IOException {
+	    		
+            	// Execute task 0.3 in the Vanilla Universe:: same as 0.2, but with an unlimited wallclock. Kill this job using the api.
 
 	    		System.out.println( "\nJobSubmitStub::submitHalfDozenJobs:\n");
 	    		
@@ -133,6 +206,8 @@ package us.kbase.SpinningAPI;
 	    	}
 	    	
 	    	public static void submitHalfDozenJobs( ) throws IOException {
+	    		
+            	// Execute task 0.4 in the Vanilla Universe:: submit 5 jobs using different user accounts, docker01 has a few already set up
 
 	    		System.out.println( "\nJobSubmitStub::submitHalfDozenJobs:\n");
 	    		

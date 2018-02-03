@@ -1,0 +1,15 @@
+# submit description file for testing the java universe:
+Universe                = java
+ 
+executable              = /home/submitter/submit/Spinning/src/us/kbase/SpinningAPI/SpinningAPImainClass.class
+
+# log                     = /home/submitter/submit/Spinning/out/logfile.txt
+output                  = /home/submitter/submit/Spinning/out/outfile.txt
+error                   = /home/submitter/submit/Spinning/out/errors.txt
+
+should_transfer_files   = No 
+# when_to_transfer_output = ON_EXIT
+
+periodic_remove = RemoteWallClockTime > 10
+
+queue
