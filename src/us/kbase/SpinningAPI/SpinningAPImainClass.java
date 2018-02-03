@@ -9,16 +9,48 @@ package us.kbase.SpinningAPI;
 	// import birdbath.Schedd.*;
 	// import java.net.URL;
     import java.io.BufferedReader;
-    import java.io.IOException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
     import java.io.InputStreamReader;
-    import java.net.*;
+import java.io.Reader;
+import java.net.*;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
+/*
+import org.joda.time.DateTime;
 
+import us.kbase.common.executionengine.ModuleMethod;
+import us.kbase.common.service.UObject;
+import us.kbase.narrativejobservice.MethodCall;
+import us.kbase.narrativejobservice.NarrativeJobServiceServer;
+import us.kbase.narrativejobservice.RpcContext;
+*/
 // import us.kbase.narrativejobservice.sdkjobs.DockerRunner;
-	
+/*
+import us.kbase.catalog.CatalogClient;
+import us.kbase.catalog.ModuleVersion;
+import us.kbase.catalog.SelectModuleVersion;
+import us.kbase.common.service.ServerException;
+import us.kbase.common.service.UObject;
+import us.kbase.narrativejobservice.FinishJobParams;
+import us.kbase.narrativejobservice.NarrativeJobServiceServer;
+import us.kbase.narrativejobservice.sdkjobs.SDKMethodRunner;
+*/
+/*
+import us.kbase.common.executionengine.ModuleMethod;
+import us.kbase.common.service.Tuple2;
+import us.kbase.narrativejobservice.NarrativeJobServiceClient;
+import us.kbase.narrativejobservice.RunJobParams;
+import us.kbase.narrativejobservice.UpdateJobParams;
+*/
+
 	// import javax.xml.rpc.ServiceException;
-    
+	// import javax.xml.rpc.*;
+
+
 	public class SpinningAPImainClass
 	{
 	        private static Map<String, String> config = null;
@@ -42,25 +74,20 @@ import java.util.Map;
 	    	}
             
 		    
-		    // main method for the Vanilla Universe:
-		    
+		    // main method for the Vanilla Universe:		    
 		    /*
 	    	public static void main(String[] args) {
 	    		
 	            System.out.println("\n\nHello JobSubmitStub:\n");
 	            String cmd = "";
-	            
+	       
 	            if( ! ( args.length > 0 ) ) {
-	            	cmd = "uname -a";
-	            	                    	
+	            	cmd = "uname -a";     	                    	
 	            } else {
-	            	
 	                for ( String str: args ){
 	            	    cmd = cmd + " " + str;
 	                }
-	                
 		    		System.out.println( "\nJobSubmitStub::Command is: " + cmd + "\n");
-
 	                
                     try{
 			    		if( cmd.contains( "0.1" ) ) {
@@ -85,9 +112,7 @@ import java.util.Map;
                     } catch (IOException e) {
 						e.printStackTrace();                    	
                     }
-	                
 	            }
-	            
 	                System.out.println("\n\nJobSubmitStub finished.");
 	    	}
 	    	*/
@@ -97,7 +122,7 @@ import java.util.Map;
 	    		// todo: Emulate like what localmethodrunner does in the old execution system today
 	    		//     endup calling docker run on this condor image...
 	    		
-	    		// todo: parse args to get job id and uri to njsw server
+	    		// parse args to get job id and uri to njsw server
 	            if (args.length != 2) {
 	                System.err.println("Usage: <program> <job_id> <job_service_url>");
 	                for (int i = 0; i < args.length; i++)
@@ -113,16 +138,118 @@ import java.util.Map;
 
 	            String[] hostnameAndIP = getHostnameAndIP();
 	            
-	            String clientGroup = System.getenv("AWE_CLIENTGROUP");
-	            if (clientGroup == null)
-	                clientGroup = "<unknown>";
+	            try {
 	            
-	            // Calling Docker run
-	            /*
-	            new DockerRunner(dockerURI).run(imageName, modMeth.getModule(), inputFile, token, log,
-	                    outputFile, false, refDataDir, null, callbackUrl, jobId, additionalBinds,
-	                    cancellationChecker, envVars);
-	    		*/
+		            // final ModuleMethod modMeth = new ModuleMethod(job.getMethod());
+		            
+		            // TODO 0: connect to the ci njsw api @ jobSrvUrl (REST... or RPC via kb-sdk... or SOAP ???)
+	            	
+	                // final NarrativeJobServiceClient jobSrvClient = getJobClient(jobSrvUrl, tempToken);
+	            	
+	                // Tuple2<RunJobParams, Map<String,String>> jobInput = jobSrvClient.getJobParams(jobId);
+	                // Map<String, String> config = jobInput.getE2();
+	            	
+	            	// RunJobParams job = jobInput.getE1();
+	            	/*
+	                for (String msg : jobSrvClient.updateJob(new UpdateJobParams().withJobId(jobId)
+	                        .withIsStarted(1L)).getMessages()) {
+	                    log.logNextLine(msg, false);
+	                }
+	                */
+	                // File jobDir = getJobDir(jobInput.getE2(), jobId);
+	                // final ModuleMethod modMeth = new ModuleMethod(job.getMethod());
+		            
+		            // RpcContext context = job.getRpcContext();
+	            	
+		            // TODO 1  get details about what its supposed to run using the ujs id as a key (pick a job any job)
+	            	
+		            /*
+		            if (context == null) context = new RpcContext().withRunId("");
+		            if (context.getCallStack() == null) context.setCallStack(new ArrayList<MethodCall>());
+		            context.getCallStack().add(new MethodCall().withJobId(jobId).withMethod(job.getMethod())
+		                    .withTime(DATE_FORMATTER.print(new DateTime())));
+		            
+		            Map<String, Object> rpc = new LinkedHashMap<String, Object>();
+		            rpc.put("version", "1.1");
+		            rpc.put("method", job.getMethod());
+		            rpc.put("params", job.getParams());
+		            rpc.put("context", context);
+		            
+		            UObject.getMapper().writeValue(inputFile, rpc);		            
+		            */
+		            
+		            // String kbaseEndpoint = config.get(NarrativeJobServiceServer.CFG_PROP_KBASE_ENDPOINT);
+	            	/*
+		            String clientDetails = hostnameAndIP[1];
+		            String clientName = System.getenv("AWE_CLIENTNAME");
+		            if (clientName != null && !clientName.isEmpty()) {
+		                clientDetails += ", client-name=" + clientName;
+		            }
+		            */
+		            // log.logNextLine("Running on " + hostnameAndIP[0] + " (" + clientDetails + "), in " + new File(".").getCanonicalPath(), false);
+		            // String clientGroup = System.getenv("AWE_CLIENTGROUP");
+		            // if (clientGroup == null) clientGroup = "<unknown>";
+		            
+		            // TODO 2  call the docker api and Pull down the needed containers
+		            /*
+		            CatalogClient catClient = new CatalogClient(catalogURL, token);
+		            catClient.setIsInsecureHttpConnectionAllowed(true);
+		            catClient.setAllSSLCertificatesTrusted(true);
+		            final String imageVersion = job.getServiceVer();
+		            final String requestedRelease = (String) job.getAdditionalProperties().get(SDKMethodRunner.REQ_REL);
+		            final ModuleVersion mv;
+		            try {
+		                mv = catClient.getModuleVersion(new SelectModuleVersion()
+		                    .withModuleName(modMeth.getModule())
+		                    .withVersion(imageVersion));
+		            } catch (ServerException se) {
+		                throw new IllegalArgumentException(String.format(
+		                        "Error looking up module %s with version %s: %s",
+		                        modMeth.getModule(), imageVersion,
+		                        se.getLocalizedMessage()));
+		            }
+		            String imageName = mv.getDockerImgName();
+		            File refDataDir = null;
+		            if (mv.getDataFolder() != null && mv.getDataVersion() != null) {
+		                String refDataBase = config.get(NarrativeJobServiceServer.CFG_PROP_REF_DATA_BASE);
+		                if (refDataBase == null)
+		                    throw new IllegalStateException("Reference data parameters are defined for image but " + 
+		                            NarrativeJobServiceServer.CFG_PROP_REF_DATA_BASE + " property isn't set in configuration");
+		                refDataDir = new File(new File(refDataBase, mv.getDataFolder()), mv.getDataVersion());
+		                if (!refDataDir.exists())
+		                    throw new IllegalStateException("Reference data directory doesn't exist: " + refDataDir);
+		            }
+		            */
+		            
+		            // TODO 3  run the job:
+		            
+		            // Calling Docker run
+		            /*
+		            new DockerRunner(dockerURI).run(imageName, modMeth.getModule(), inputFile, token, log,
+		                    outputFile, false, refDataDir, null, callbackUrl, jobId, additionalBinds,
+		                    cancellationChecker, envVars);
+		    		*/
+		            
+		            /*
+		            if (outputFile.length() > MAX_OUTPUT_SIZE) {
+		                Reader r = new FileReader(outputFile);
+		                char[] chars = new char[1000];
+		                r.read(chars);
+		                r.close();
+		                String error = "Method " + job.getMethod() + " returned value longer than " + MAX_OUTPUT_SIZE + 
+		                        " bytes. This may happen as a result of returning actual data instead of saving it to " +
+		                        "kbase data stores (Workspace, Shock, ...) and returning reference to it. Returned " +
+		                        "value starts with \"" + new String(chars) + "...\"";
+		                throw new IllegalStateException(error);
+		            }
+		            FinishJobParams result = UObject.getMapper().readValue(outputFile, FinishJobParams.class);
+	                */
+	            } catch (Exception ex) {
+	            
+	            } finally {
+	            
+	            }
+	            
 	            
 	    		System.out.println( "\nJobSubmitStub::submitJavaUniverse JOB WELL... DONE!\n\n");
 
@@ -153,7 +280,7 @@ import java.util.Map;
 	                    ip == null ? "unknown" : ip};
 	        }	    	
 	    	
-	    	////////// Vanilla Universe methods //////////////////////////////////////////////
+	    	////////// Vanilla Universe methods //////////////////////////////////////////////////////////////////////////
 	    	public static void submitPrintTime( ) throws IOException {
 	    		
             	// Execute task 0.1 in the Vanilla Universe: submit a test job that prints the current timestamp to an output file and exits
