@@ -56,10 +56,8 @@ import us.kbase.narrativejobservice.UpdateJobParams;
 	        private static Map<String, String> config = null;
 		    public static final String CFG_PROP_SELF_EXTERNAL_URL = "https://ci.kbase.us/services/njs_wrapper";
 		    
-		    // TODO: main method for the Java Universe:
-		    
-	    	public static void main(String[] args) {
-	    		
+		    // main method for the Java Universe:		    
+	    	public static void main(String[] args) {	    		
 	            System.out.println("\n\nHello JobSubmitStub:\n");
 	            try {
 	            	
@@ -118,7 +116,7 @@ import us.kbase.narrativejobservice.UpdateJobParams;
 	    	*/
 	    	
 	    	public static void submitJavaUniverse( String[] args ) throws IOException {
-	    		// Got here because the Java Universe example submit file called this executable
+	    		// Got here because the Java Universe submit file called this executable
 	    		// todo: Emulate like what localmethodrunner does in the old execution system today
 	    		//     endup calling docker run on this condor image...
 	    		
@@ -159,7 +157,12 @@ import us.kbase.narrativejobservice.UpdateJobParams;
 	                // File jobDir = getJobDir(jobInput.getE2(), jobId);
 	                // final ModuleMethod modMeth = new ModuleMethod(job.getMethod());
 		            
-		            // RpcContext context = job.getRpcContext();
+
+	            	
+		            // RpcContext context = new RpcContext(); 
+	            	// RpcContext context = job.getRpcContext();
+		            
+		            
 	            	
 		            // TODO 1  get details about what its supposed to run using the ujs id as a key (pick a job any job)
 	            	
